@@ -1,0 +1,18 @@
+{
+  "name": "cubical",
+  "version": "1.0.0",
+  "description": "Softuni Back-End Course Project",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "nodemon src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
