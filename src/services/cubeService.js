@@ -20,7 +20,27 @@ const cubesData = [
 ];
 const { v4: uuidv4 } = require("uuid");
 
-exports.getAllCubes = () => cubesData.slice();
+exports.getAllCubes = (search, from, to) => {
+  let result = cubesData.slice();
+  console.log(result);
+
+  if (search) {
+    result = result.filter((cube) =>
+      cube.cubeName.toLocaleLowerCase().includes(search.toLocaleLowerCase())
+    );
+  }
+
+  if (from) {
+    result = result.filter((cube) => cube.cubeDiff >= Number(from));
+  }
+
+  if (to) {
+    result = result.filter((cube) => cube.cubeDiff <= Number(to));
+  }
+
+  return result;
+};
+
 exports.getOneCube = (cubeId) => cubesData.find((x) => x.id == cubeId);
 
 exports.create = (cubeName, cubeDesc, cubeImgUrl, cubeDiff) => {
