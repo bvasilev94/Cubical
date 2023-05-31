@@ -3,7 +3,6 @@ const router = require("express").Router();
 const cubeManage = require("../services/cubeService.js");
 
 router.get("/create", (req, res) => {
-  console.log(cubeManage.getAllCubes());
   res.render("create");
 });
 
@@ -19,7 +18,7 @@ router.get("/details/:cubeId", (req, res) => {
   const cube = cubeManage.getOneCube(req.params.cubeId);
 
   if (!cube) {
-    res.redirect("/404");
+    return res.redirect("/404");
   }
 
   res.render("details", { cube });
