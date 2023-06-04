@@ -6,10 +6,15 @@ router.get("/create", (req, res) => {
   res.render("create");
 });
 
-router.post("/create", (req, res) => {
+router.post("/create", async (req, res) => {
   const { name, description, imageUrl, difficultyLevel } = req.body;
 
-  cubeManage.create(name, description, imageUrl, Number(difficultyLevel));
+  await cubeManage.create({
+    name,
+    description,
+    imageUrl,
+    difficultyLvl: Number(difficultyLevel),
+  });
 
   res.redirect("/");
 });

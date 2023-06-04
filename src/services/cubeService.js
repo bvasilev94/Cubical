@@ -1,3 +1,4 @@
+const Cube = require("../models/Cube.js");
 const cubesData = [
   {
     id: "1sdkks234kks98masssasddsa2l94",
@@ -22,7 +23,6 @@ const { v4: uuidv4 } = require("uuid");
 
 exports.getAllCubes = (search, from, to) => {
   let result = cubesData.slice();
-  console.log(result);
 
   if (search) {
     result = result.filter((cube) =>
@@ -43,16 +43,10 @@ exports.getAllCubes = (search, from, to) => {
 
 exports.getOneCube = (cubeId) => cubesData.find((x) => x.id == cubeId);
 
-exports.create = (cubeName, cubeDesc, cubeImgUrl, cubeDiff) => {
-  const newCube = {
-    id: uuidv4(),
-    cubeName,
-    cubeDesc,
-    cubeImgUrl,
-    cubeDiff,
-  };
-
-  cubesData.push(newCube);
+exports.create = async (cubeData) => {
+  const newCube = new Cube(cubeData);
+  
+  await newCube.save();
 
   return newCube;
 };
