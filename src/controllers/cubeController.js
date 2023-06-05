@@ -29,5 +29,7 @@ router.get("/:cubeId/details", async (req, res) => {
   res.render("details", { cube });
 });
 
-router.get("/:cubeId/add-accessory", (req, res) => {'accessory/attach'});
+router.get("/:cubeId/add-accessory", (req, res) => {
+  res.render("accessory/attach");
+});
 module.exports = router;
