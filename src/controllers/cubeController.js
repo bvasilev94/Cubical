@@ -1,6 +1,7 @@
 const router = require("express").Router();
 
-const cubeManager = require("../services/cubeService.js");
+const cubeService = require("../services/cubeService.js");
+const accessoryService = require("../services/accessoryService.js");
 
 router.get("/create", (req, res) => {
   res.render("create");
@@ -9,7 +10,7 @@ router.get("/create", (req, res) => {
 router.post("/create", async (req, res) => {
   const { name, description, imageUrl, difficultyLevel } = req.body;
 
-  await cubeManager.create({
+  await cubeService.create({
     name,
     description,
     imageUrl,
@@ -20,7 +21,7 @@ router.post("/create", async (req, res) => {
 });
 
 router.get("/:cubeId/details", async (req, res) => {
-  const cube = await cubeManager.getOneCube(req.params.cubeId);
+  const cube = await cubeService.getOneCube(req.params.cubeId);
 
   if (!cube) {
     return res.redirect("/404");
@@ -30,8 +31,9 @@ router.get("/:cubeId/details", async (req, res) => {
 });
 
 router.get("/:cubeId/add-accessory", async (req, res) => {
-  const cube = await cubeManager.getOneCube(req.params.cubeId);
+  const cube = await cubeService.getOneCube(req.params.cubeId);
+  const accessories = await accessoryService.getAll();
 
-  res.render("accessory/attach", { cube });
+  res.render("accessory/attach", { cube, accessories });
 });
 module.exports = router;
