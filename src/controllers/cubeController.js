@@ -32,7 +32,7 @@ router.get("/:cubeId/details", async (req, res) => {
 
 router.get("/:cubeId/add-accessory", async (req, res) => {
   const cube = await cubeService.getOneCube(req.params.cubeId);
-  const accessories = await accessoryService.getAll();
+  const accessories = await accessoryService.getAllAvailable(cube.accessories);
 
   const hasAccessories = accessories.length > 0;
 
