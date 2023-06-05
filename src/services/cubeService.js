@@ -20,7 +20,7 @@ exports.getAllCubes = async (search, from, to) => {
   return result;
 };
 
-exports.getOneCube = (cubeId) => Cube.findById(cubeId).lean();
+exports.getOneCube = (cubeId) => Cube.findById(cubeId).populate('accessories').lean();
 
 exports.create = (cubeData) => {
   const newCube = new Cube(cubeData);
