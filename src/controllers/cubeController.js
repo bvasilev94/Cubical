@@ -4,7 +4,6 @@ const cubeService = require("../services/cubeService.js");
 const accessoryService = require("../services/accessoryService.js");
 
 router.get("/create", (req, res) => {
-  console.log(req.user);
   res.render("create");
 });
 
@@ -49,4 +48,11 @@ router.post("/:cubeId/add-accessory", async (req, res) => {
 
   res.redirect(`/cubes/${cubeId}/details`);
 });
+
+router.get("/:cubeId/delete", async (req, res) => {
+  const cube = await cubeService.getOneCube(req.params.cubeId);
+
+  res.render("delete", { cube });
+});
+
 module.exports = router;
