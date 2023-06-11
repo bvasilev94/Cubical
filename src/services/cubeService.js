@@ -20,7 +20,8 @@ exports.getAllCubes = async (search, from, to) => {
   return result;
 };
 
-exports.getOneCube = (cubeId) => Cube.findById(cubeId).populate('accessories').lean();
+exports.getOneCube = (cubeId) =>
+  Cube.findById(cubeId).populate("accessories").lean();
 
 exports.create = (cubeData) => {
   const newCube = new Cube(cubeData);
@@ -36,3 +37,8 @@ exports.attachAccessory = async (cubeId, accessoryId) => {
 
   return cube.save();
 };
+
+exports.update = async (cubeId, cubeData) =>
+  Cube.findByIdAndUpdate(cubeId, cubeData);
+
+exports.delete = (cubeId) => Cube.findByIdAndDelete(cubeId);
