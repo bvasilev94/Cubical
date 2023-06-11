@@ -2,6 +2,7 @@ const router = require("express").Router();
 
 const cubeService = require("../services/cubeService.js");
 const accessoryService = require("../services/accessoryService.js");
+const { changeDifficultyLevel } = require("../lib/viewHelpers.js");
 
 router.get("/create", (req, res) => {
   res.render("create");
@@ -52,7 +53,9 @@ router.post("/:cubeId/add-accessory", async (req, res) => {
 router.get("/:cubeId/delete", async (req, res) => {
   const cube = await cubeService.getOneCube(req.params.cubeId);
 
-  res.render("delete", { cube });
+  const options = changeDifficultyLevel(cube.difficultyLvl);
+
+  res.render("delete", { cube, options });
 });
 
 router.post("/:cubeId/delete", async (req, res) => {
@@ -64,7 +67,9 @@ router.post("/:cubeId/delete", async (req, res) => {
 router.get("/:cubeId/edit", async (req, res) => {
   const cube = await cubeService.getOneCube(req.params.cubeId);
 
-  res.render("edit", { cube });
+  const options = changeDifficultyLevel(cube.difficultyLvl);
+
+  res.render("edit", { cube, options });
 });
 
 router.post("/:cubeId/edit", async (req, res) => {
