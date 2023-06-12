@@ -4,6 +4,7 @@ const cubeService = require("../services/cubeService.js");
 const accessoryService = require("../services/accessoryService.js");
 const { changeDifficultyLevel } = require("../lib/viewHelpers.js");
 const { isAuth } = require("../middlewares/authMiddleware.js");
+const { extractErrMessages } = require("../utils/errorHelper.js");
 
 router.get("/create", isAuth, (req, res) => {
   res.render("create");
@@ -11,16 +12,20 @@ router.get("/create", isAuth, (req, res) => {
 
 router.post("/create", isAuth, async (req, res) => {
   const { name, description, imageUrl, difficultyLevel } = req.body;
+  try {
+    await cubeService.create({
+      name,
+      description,
+      imageUrl,
+      difficultyLvl: Number(difficultyLevel),
+      owner: req.user._id,
+    });
 
-  await cubeService.create({
-    name,
-    description,
-    imageUrl,
-    difficultyLvl: Number(difficultyLevel),
-    owner: req.user._id,
-  });
-
-  res.redirect("/");
+    res.redirect("/");
+  } catch (error) {
+    const errorMessages = extractErrMessages(error);
+    res.status(404).render("create", { errorMessages });
+  }
 });
 
 router.get("/:cubeId/details", async (req, res) => {

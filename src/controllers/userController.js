@@ -1,6 +1,7 @@
 const router = require("express").Router();
 
 const userService = require("../services/usersService.js");
+const { extractErrMessages } = require("../utils/errorHelper.js");
 
 router.get("/register", (req, res) => {
   res.render("auth/register");
@@ -8,10 +9,13 @@ router.get("/register", (req, res) => {
 
 router.post("/register", async (req, res) => {
   const { username, password, repeatPassword } = req.body;
-
-  await userService.register({ username, password, repeatPassword });
-
-  res.redirect("/users/login");
+  try {
+    await userService.register({ username, password, repeatPassword });
+    res.redirect("/users/login");
+  } catch (error) {
+    const errorMessages = extractErrMessages(error);
+    res.status(404).render("auth/register", { errorMessages });
+  }
 });
 
 router.get("/login", (req, res) => {
@@ -20,12 +24,16 @@ router.get("/login", (req, res) => {
 
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
+  try {
+    const token = await userService.login(username, password);
 
-  const token = await userService.login(username, password);
+    res.cookie("auth", token, { httpOnly: true });
 
-  res.cookie("auth", token, { httpOnly: true });
-
-  res.redirect("/");
+    res.redirect("/");
+  } catch (error) {
+    const errorMessages = ["Incorrect username or password"];
+    res.status(404).render("auth/login", { errorMessages });
+  }
 });
 
 router.get("/logout", (req, res) => {
